@@ -2,24 +2,19 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// Main URL par jaate hi direct Login page par redirect hoga
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// --- Task CRUD Routes ---
+// Task CRUD Routes
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('tasks', TaskController::class)->only([
         'index', 'store', 'update', 'destroy'
